@@ -24,11 +24,12 @@ x4 = dataset.iloc[56:, [1]].values #not ok
 Xtests = [[-0.3, 1.0], [-0.5, -0.1], [0.6, 0.0]]
 Xtests = np.array(Xtests).reshape(3,2)
 
-plt.title('Plot of orignal data')
-ok = plt.scatter(x1,x2,color='green')
-notOk = plt.scatter(x3,x4,color='red')
-plt.legend((ok, notOk), ('Chip OK', 'Chip Failed') )
-plt.show()
+fig, ax = plt.subplots()
+ok = ax.scatter(x1,x2,color='green')
+notOk = ax.scatter(x3,x4,color='red')
+ax.legend((ok, notOk), ('Chip OK', 'Chip Failed') )
+ax.set_title('Plot of orignal data')
+
 
 numOfRows = Xtests.shape[0]
 
@@ -44,10 +45,10 @@ for k in ks:
         print(f'\t chip{counter}: {Xtest} ==> {thisdict[ypred[row]]}')
         counter +=1
 
-fig, ax = plt.subplots(nrows=2, ncols=2)
-count = 0
 
-h = 0.02
+
+
+h = 0.05
 x_min, x_max = X[:, 0].min()-0.2, X[:, 0].max()+0.2
 y_min, y_max = X[:, 1].min()-0.2, X[:, 1].max()+0.2
 xx, yy = np.meshgrid(np.arange(x_min, x_max, h),np.arange(y_min, y_max, h)) # Mesh Grid
@@ -56,19 +57,23 @@ xy_mesh = np.c_[xx.ravel(), yy.ravel()] # Turn to Nx2 matrix
 cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA'])
 cmap_bold = ListedColormap(['#FF0000', '#00FF00'])
 
-for row in ax:
+
+count = 0
+fig1, ax1 = plt.subplots(nrows=2, ncols=2)
+for row in ax1:
     for col in row:
         classifier = KNeighborsClassifier(ks[count])
         classifier.fit(X,y)
         clzmesh = classifier.predict(xy_mesh)
+        errors = classifier.getTraningerrors()
         clzmesh = clzmesh.reshape(xx.shape)
+
         col.pcolormesh(xx, yy, clzmesh, cmap=cmap_light)
         col.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_bold)
-        col.title.set_text(f'Decision boundary k = {ks[count]} ')
+        col.set_title(f'k = {ks[count]}, traning errors = {errors} ')
         count +=1
 
-plt.xlim(xx.min(), xx.max())
-plt.ylim(yy.min(), yy.max())
 plt.tight_layout()
 plt.show()
+
 
