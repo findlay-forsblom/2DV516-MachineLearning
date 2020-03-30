@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from matplotlib.colors import ListedColormap
 
 dataset = pd.read_csv('microchips.csv')
-ks = [1,3,5,7]
+ks = [1,3,5,7] #The different values of k's tested
 
 thisdict = {
   1: "OK",
@@ -21,8 +21,9 @@ x2 = dataset.iloc[:56, [1]].values #ok
 x3 = dataset.iloc[56:, [0]].values #not ok
 x4 = dataset.iloc[56:, [1]].values #not ok
 
+#All test cases
 Xtests = [[-0.3, 1.0], [-0.5, -0.1], [0.6, 0.0]]
-Xtests = np.array(Xtests).reshape(3,2)
+Xtests = np.array(Xtests).reshape(3,2) #reshaping to a numpy matrix
 
 fig, ax = plt.subplots()
 ok = ax.scatter(x1,x2,color='green')
@@ -33,11 +34,12 @@ ax.set_title('Plot of orignal data')
 
 numOfRows = Xtests.shape[0]
 
+
 for k in ks:
     classifier = KNeighborsClassifier(k)
     classifier.fit(X,y)
     print(f'k = {k}')
-    counter = 1
+    counter = 1 
     ypred = classifier.predict(Xtests)
      
     for row in range(numOfRows):
@@ -47,8 +49,8 @@ for k in ks:
 
 
 
-
-h = 0.05
+# Code for drawing meshhgrid partly gotten from jonas in slack
+h = 0.02
 x_min, x_max = X[:, 0].min()-0.2, X[:, 0].max()+0.2
 y_min, y_max = X[:, 1].min()-0.2, X[:, 1].max()+0.2
 xx, yy = np.meshgrid(np.arange(x_min, x_max, h),np.arange(y_min, y_max, h)) # Mesh Grid
@@ -75,5 +77,4 @@ for row in ax1:
 
 plt.tight_layout()
 plt.show()
-
 

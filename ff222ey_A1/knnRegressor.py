@@ -37,10 +37,7 @@ class KNeighborsRegressor:
         X = np.copy(self.X)
         y = self.y
         ypred = self.predict(X)
-        sum = 0
-        for num in range(len(ypred)):
-            distance = ((ypred[num] - y[num]) ** 2)
-            sum += distance
-        sum = round((sum / len(ypred)), 2) 
-        return sum
+        sums = (ypred - y) ** 2
+        return round((np.sum(sums)) / len(ypred), 2)   
+        
     
