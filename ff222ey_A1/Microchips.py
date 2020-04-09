@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.colors import ListedColormap
 
-dataset = pd.read_csv('microchips.csv')
+dataset = pd.read_csv('microchips.csv') # Reading from the csv file
 ks = [1,3,5,7] #The different values of k's tested
 
 thisdict = {

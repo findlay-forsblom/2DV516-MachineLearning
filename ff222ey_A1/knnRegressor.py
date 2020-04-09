@@ -19,20 +19,14 @@ class KNeighborsRegressor:
     def predict(self, Xtest):
         ypred = []
         lenght = len(Xtest)
+        X = self.X
+        y = self.y
         for value in range(lenght):
-            sum = 0
-            temp = np.copy(self.X)
-            yTemp = np.copy(self.y)
-            for num in range(self.n_neighbors):
-                idx = (np.abs(temp - Xtest[value])).argmin()
-                yvalue = yTemp[idx]
-                sum += yvalue
-                temp = np.delete(temp, idx)
-                yTemp = np.delete(yTemp, idx)
-            ypred.append(sum / self.n_neighbors)
+            idx = np.argpartition((np.abs(X- Xtest[value])), self.n_neighbors)[:self.n_neighbors] # finds the indices k nearest neighbours
+            ypred.append(np.sum(y[idx]) / len(idx)) #sums the values of the k nearest nieggbors
         ypred = np.array(ypred)
         return ypred
-    
+        
     def getTraningerrors(self):
         X = np.copy(self.X)
         y = self.y
