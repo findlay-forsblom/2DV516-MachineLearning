@@ -35,10 +35,10 @@ plt.tight_layout()
 
 
 #Task 3
-theta = regressor.computeBeta(X,y)
+theta = regressor.computeBeta()
 X_test = np.array([[2432, 1607, 1683, 8,8,256]])
 ypred = regressor.predictWithNormalEqua(X_test)
-print(f'Task 3 \n {ypred}\n')
+print(f'Task 3 \n The betas gotten were {theta}\n The predicted value with those betas was {ypred[0]} \n')
 
 #Task 4
 cost = regressor.getCost()

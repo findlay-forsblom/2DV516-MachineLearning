@@ -9,23 +9,24 @@ class LinearRegression:
         self.y = y
         self.u = np.mean(X, axis=0)
         self.std = np.std(X, axis=0)
-        return self.__featureScaling__(X)
+        self.Xe = self.__featureScaling__(X)
+        return self.Xe
     
     def __featureScaling__(self, X):
        return (X - self.u) / self.std
    
-    def computeBeta(self, X, y):
-        N = X.shape[0]
-        Xe = self.__featureScaling__(X)
+    def computeBeta(self):
+        Xe = self.Xe
+        N = Xe.shape[0]
         Xe = np.c_[np.ones(N), Xe ]
+        y = self.y
         self.theta =  np.linalg.inv(Xe.T.dot(Xe)).dot(Xe.T).dot(y)
         self.theta = self.theta.flatten()
         return self.theta
         
     def predictWithNormalEqua(self, X):
         Xe = self.__extendArray__(X)
-        Xe = Xe.flatten()
-        return np.sum(self.theta * Xe, axis = 0)
+        return (Xe.dot(self.theta))
     
     def predictWithGradient(self,X):
         Xe = self.__extendArray__(X)
@@ -58,14 +59,11 @@ class LinearRegression:
         while True:
             iterations +=1
             gradients = 2/N * Xe.T.dot((Xe.dot(theta) - self.y) )
-            #gradients = gradients.flatten()
             theta = theta - eta * gradients
             j = np.dot(Xe, theta) -  self.y
             J = (j.T.dot(j)) / N
             MSE.append(J[0][0])
-           # print(J[0])
             current = np.round(cost / (J[0]) *100, 2)
-            #print(current)
             if current == 99:
                 break;
         self.thetaGradient = theta       
