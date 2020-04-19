@@ -3,6 +3,8 @@
 Created on Thu Apr  9 13:13:41 2020
 
 @author: findlay Forsblom
+
+Exercise 1
 """
 
 

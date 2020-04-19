@@ -3,6 +3,9 @@
 Created on Thu Apr  9 22:15:37 2020
 
 @author: findlay Forsblom ff22ey
+
+
+Exercise 2
 """
 
 
@@ -11,6 +14,7 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.preprocessing import PolynomialFeatures
+from Classes.RandomFunctions import *
 
 dataset = pd.read_csv('./Datasets/housing_price_index.csv', header=None) # Reading from the csv file
 X = dataset.iloc[:, 0:1].values
@@ -29,12 +33,10 @@ x = X + 1975
 #Task 2
 i = 1
 
-fig1, ax1 = plt.subplots(nrows=2, ncols=2, dpi=300)
+fig1, ax1 = plt.subplots(nrows=2, ncols=2, dpi=100)
 for row in ax1:
     for col in row:
-        poly = PolynomialFeatures(degree = i)
-        X_poly = poly.fit_transform(X)
-        X_poly = np.delete(X_poly, 0, axis = 1)
+        X_poly = degree(X,i)
         regressor = LinearRegression()
         regressor.fit(X_poly,y)
         
@@ -42,7 +44,7 @@ for row in ax1:
         cost = regressor.getCost()
 
         ypred = regressor.predictWithNormalEqua(X_poly)
-        col.plot(x, y, 'o')
+        col.scatter(x, y, s=10)
         col.plot(x,ypred, 'r-')
         col.set_xlabel('year')
         col.set_title(f'degree {i}, Cost = {round(cost,2)}')
