@@ -26,7 +26,7 @@ y = dataset[:, -1]
 # Task 2
 y = y//4
 
-allocation = 0.8
+allocation = 0.8 #test Ratio
 
 split = int(allocation * dataset.shape[0])
 
