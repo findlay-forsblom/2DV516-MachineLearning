@@ -36,19 +36,6 @@ r = np.random.permutation(len(ytest))
 X, y = Xtest[r, :], ytest[r]
 X_test, y_test = X[:1000, :], y[:1000]
 
-"""
-X_train = Xtrain[:10000]
-y_train = ytrain[:10000]
-
-X_train = X_train / 255
-
-X_test = Xtest[:1000]
-y_test = ytest[:1000]
-
-X_test = X_test / 255
-"""
-
-
 categories = []
 number = []
 
@@ -111,14 +98,20 @@ ax.set_xlabel('Predicted labels', );ax.set_ylabel('True labels');
 ax.set_title('Confusion Matrix (One Vs One)'); 
 ax.xaxis.set_ticklabels(labels); ax.yaxis.set_ticklabels(labels);
 
+
+
+#-----------------------------
 #Second part of the assignment
+#----------------------------
+
+
 
 classifiers = []
 for num in np.unique(y_train):
     svc = svm.SVC(kernel = 'rbf', C = 8, gamma= 'scale', probability = True)
     classifiers.append(svc)
 
-classifier = OneVsRestClassifier(classifiers)
+classifier = OneVsRestClassifier(classifiers) #own implemented class
 classifier.fit(X_train, y_train)
 y_pred = classifier.predict(X_test)
 print ('accuracy score: %0.3f' % accuracy_score(y_test, y_pred))
