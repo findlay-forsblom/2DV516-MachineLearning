@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4ac4d091-e456-496c-bbf2-50ced7479c0e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../../ff222ey_A2/ff222ey_assign2.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Classes/functions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Exercise1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ExerciseA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ff222ey_A2/Exercies/Datasets/ReadMe 2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ff222ey_A2/Exercies/Datasets/ReadMe.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ff222ey_A2/Exercies/Datasets/RealEstate.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ff222ey_A2/Exercies/Datasets/admissiontests.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ff222ey_A2/Exercies/Datasets/iris2D.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ff222ey_A2/Exercies/Datasets/polynomial.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ff222ey_A2/Exercies/Datasets/stat_females.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ff222ey_A2/Exercies/ExerciseA.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ff222ey_A2/Exercies/ExerciseB.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ff222ey_A2/NonLinear_Logistic_Reg.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../ff222ey_A2/NonLinear_Logistic_Reg.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1bLIl1cLXiM92jKBUqx8WVXAyIf" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunManager">
+    <configuration name="ExerciseB" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Exercises" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ExerciseB.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.ExerciseB" />
+        <item itemvalue="Python.ExerciseB" />
+        <item itemvalue="Python.ExerciseB" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4ac4d091-e456-496c-bbf2-50ced7479c0e" name="Default Changelist" comment="" />
+      <created>1588405094636</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1588405094636</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="0" y="210" key="#xdebugger.XInspectDialog" timestamp="1588405621661">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="0" y="210" key="#xdebugger.XInspectDialog/0.0.1440.900@0.0.1440.900" timestamp="1588405621661" />
+    <state x="229" y="89" key="SettingsEditor" timestamp="1588405957017">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="229" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1588405957017" />
+    <state width="720" height="450" key="XDebugger.FullValuePopup" timestamp="1588405683161">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="720" height="450" key="XDebugger.FullValuePopup/0.0.1440.900@0.0.1440.900" timestamp="1588405683161" />
+  </component>
+</project>

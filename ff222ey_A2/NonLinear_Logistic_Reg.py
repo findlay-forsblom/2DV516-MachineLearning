@@ -4,10 +4,12 @@
 Created on Tue Apr 14 16:45:09 2020
 
 @author: findlayforsblom
+
+Exerrcise 4
 """
 
-from Classes.Logistics import LogisticRegression
 from Classes.RandomFunctions import *
+from Classes.Logistics import LogisticRegression
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -69,7 +71,7 @@ errors = clf.getTrainingErrors()
 
 ax1[1].pcolormesh(xx, yy, clzmesh, cmap=cmap_light)
 ax1[1].scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_bold)
-ax1[1].set_title(f'Training errors {errors}')
+ax1[1].set_title(f'Training errors {errors} degree = {degree}')
 
 
 # Task 4
@@ -104,5 +106,5 @@ errors = clf.getTrainingErrors()
 
 ax2[1].pcolormesh(xx, yy, clzmesh, cmap=cmap_light)
 ax2[1].scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_bold)
-ax2[1].set_title(f'Training errors {errors}')
+ax2[1].set_title(f'Training errors {errors} degree  = {degree}')
 plt.show()
