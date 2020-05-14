@@ -16,7 +16,6 @@ class OneVsRestClassifier(BaseEstimator, ClassifierMixin):
         i = 0
         classifiers = []
         for num in np.unique(y_train):
-            print(num)
             y = np.isin(y_train, num)
             y = y.astype(int)
             classifier = self.classifiers[i]

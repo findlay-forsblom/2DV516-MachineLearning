@@ -1,80 +1,87 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon May 11 07:08:23 2020
+Created on Wed May 13 07:54:45 2020
 
-@author: findlayforsblom
+@author: findlay
 """
 
-import numpy as np
+
 import pandas as pd
+import numpy as np
 from matplotlib import pyplot as plt
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import accuracy_score
+import tensorflow as tf
+from tensorflow import keras
 from random import choice
+import seaborn as sns
 
-dataset_train = pd.read_csv('./Datasets/fashion-mnist_train.csv', delimiter=',', header = None)
-dataset_test = pd.read_csv('./Datasets/fashion-mnist_test.csv', delimiter=',', header = None)
+# Most of the code used was pretty much gotten from the book
 
-dataset_train = dataset_train.to_numpy()
-dataset_test = dataset_test.to_numpy()
+fashion_mnist = keras.datasets.fashion_mnist
 
-np.random.shuffle(dataset_train)
-np.random.shuffle(dataset_test)
+(X_train_full, y_train_full), (X_test, y_test) = fashion_mnist.load_data()
 
-dataset_train = dataset_train.astype(np.float)
-arr = np.array(dataset_test, dtype=np.float32)
 
-X_train = dataset_train[:, 1:]
-y_train = dataset_train[:, 0]
+X_valid, X_train = X_train_full[:5000] / 255.0, X_train_full[5000:] / 255.0
+y_valid, y_train = y_train_full[:5000], y_train_full[5000:]
+X_test = X_test / 255.0
 
-X_test = dataset_test[:, 1:]
-y_test = dataset_test[:, 0]
+class_names = ["T-shirt", "Trouser", "Pullover", "Dress", "Coat",
+               "Sandal", "Shirt", "Sneaker", "Bag", "boot"]
 
-class_labels = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
 
 #Task 1
-sequence = [i for i in range(len(y_train))]
+sequence = [i for i in range(len(y_train_full))]
 fig1, ax1 = plt.subplots(nrows=4, ncols=4)
 for row in ax1:
     for col in row:
        selection = choice(sequence)
        # print(selection)
-       label = class_labels[y_train[selection]]
+       label = class_names[y_train_full[selection]]
        # The rest of columns are pixels
-       pixels = X_train[selection]
+       pixels = X_train_full[selection]
        pixels = np.array(pixels, dtype='uint8')
-        
-       # Reshape the array into 28 x 28 array (2-dimensional array)
-       pixels = pixels.reshape((28, 28))
-        
-        # Plot
+       
+       # Plot
        col.title.set_text('{label}'.format(label=label))
        col.imshow(pixels, cmap='gray')
        col.set_axis_off()
 plt.tight_layout()
 
 
-# Task 2
-from sklearn.neural_network import MLPClassifier
-X_train, y_train = X_train[:100, :], y_train[:100]
-X_test, y_test = X_test[:10, :], y_test[:10]
-clf = MLPClassifier(random_state = 0, warm_start = True)
 
-X_train = np.array(X_train, dtype=np.float32) / 255
-y_train = np.array(y_train, dtype=np.float32)
+#Task 2
+model = keras.models.Sequential()
+model.add(keras.layers.Flatten(input_shape=[28, 28]))
+model.add(keras.layers.Dense(300, activation="relu"))
+model.add(keras.layers.Dense(100, activation="relu"))
+model.add(keras.layers.Dense(10, activation="softmax"))
 
-parameters = [{'activation': ['identity', 'logistic', 'tanh', 'relu'],
-               'solver': ['lbfgs', 'sgd', 'adam'],
-               'alpha': [0.001, 0.01, 0.1, 1],
-               'max_iter':[1000, 5000],
-               'hidden_layer_sizes':[(9,), (10,), (None,10)]}]
-grid_search = GridSearchCV(estimator = clf,
-                           param_grid = parameters,
-                           cv = 5,
-                           n_jobs = -1,
-                           verbose = 1)
-grid_search = grid_search.fit(X_train, y_train)
-best_score = grid_search.best_score_
-best_parameters = grid_search.best_params_
+model.compile(loss="sparse_categorical_crossentropy",
+              optimizer="sgd",
+              metrics=["accuracy"])
+
+history = model.fit(X_train, y_train, epochs=30,
+                    validation_data=(X_valid, y_valid))
+
+val_loss, val_acc = model.evaluate(X_test, y_test)
+
+
+# Task 3
+from sklearn.metrics import confusion_matrix
+y_pred = model.predict_classes(X_test, verbose = 1)
+cm = confusion_matrix(y_test, y_pred)
+
+
+
+fig, ax = plt.subplots(figsize=(12,9))  
+sns.heatmap(cm, annot=True, ax = ax, cmap = 'Blues', fmt="d", linewidths=.5); #annot=True to annotate cells
+sns.set(font_scale=1.4) # for label size
+
+# labels, title and ticks
+ax.set_xlabel('Predicted labels', );ax.set_ylabel('True labels'); 
+ax.set_title('Confusion Matrix Fashion MNIST'); 
+ax.xaxis.set_ticklabels(class_names); ax.yaxis.set_ticklabels(class_names);
+ax.xaxis.set_tick_params(labelsize=12)
+ax.yaxis.set_tick_params(labelsize=11)
+plt.tight_layout()
