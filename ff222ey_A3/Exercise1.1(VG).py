@@ -59,7 +59,7 @@ y_pred = svc.predict(kernel_X_test)
 print ('accuracy score: %0.3f' % accuracy_score(y_test, y_pred))
 
 #computing the decision boundary
-x1, x2, xx, yy = computeMesh(X_train[:,0], X_train[:,1], 0.02)
+x1, x2, xx, yy = computeMesh(X_train[:,0], X_train[:,1], 0.05)
 xy_mesh = np.c_[x1, x2] # Turn to Nx2 matrix
 clzmesh = svc.predict(computeGram(xy_mesh, X_train, 1, 1))
 clzmesh = clzmesh.reshape(xx.shape)

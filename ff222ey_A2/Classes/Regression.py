@@ -9,6 +9,8 @@ class LinearRegression:
         self.y = y
         self.u = np.mean(X, axis=0)
         self.std = np.std(X, axis=0)
+        print(self.u)
+        print(self.std)
         self.Xe = self.__featureScaling__(X)
         return self.Xe
     
