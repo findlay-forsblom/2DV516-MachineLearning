@@ -23,7 +23,7 @@ class AnovaKernel(BaseEstimator,TransformerMixin):
         return self
 
     def anova(self, xi, xj, sig, d):
-        return np.sum(((xi-xj) ** 2) * (-sig)) ** d
+        return np.sum(np.exp((-sig*  ((xi-xj) ** 2))  )) ** d
     
     def computeGram(self, X,Y,sig, d):
         n = X.shape[0]
