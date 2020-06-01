@@ -20,10 +20,10 @@ div_threshold = 1e-9
 def sammon(X, itera, thresh, alpha):
     Y = np.random.rand(np.shape(X)[0], 2)
     
-    delta_ij = euclidean_distances(X, X) #distance output space
+    delta_ij = euclidean_distances(X, X) #distance input space
     
     for i in range(itera):
-        d_ij = euclidean_distances(Y, Y) #distance input space
+        d_ij = euclidean_distances(Y, Y) #distance output space
         c = np.sum(delta_ij) / 2 
         E = sammonStress(d_ij, delta_ij, c)
         print (E)
@@ -37,17 +37,39 @@ def sammonStress(d_ij, delta_ij, c):
     # d_ij = euclidean_distances(dist_input, dist_input) #distance input space
     # delta_ij = euclidean_distances(dist_output, dist_output) #distance output space
     
-    delta_ij[delta_ij < 1e-5] = 1e-5 #to avoid division with 0
+    #delta_ij[delta_ij < 1e-5] = 1e-5 #to avoid division with 0
    # scale = np.sum(delta_ij) / 2 
-    dist = np.sum(((d_ij - delta_ij) ** 2 ) / delta_ij) / 2
+    #dist = np.sum(((d_ij - delta_ij) ** 2 ) / delta_ij) / 2
+    
+    numerator = np.sum((d_ij - delta_ij) ** 2 ) / 2
+    denominator = np.sum(delta_ij) / 2
+    
+    dist = numerator / denominator
+    
+    
     return dist / c
 
 
 def gradient(Y, d_ij, delta_ij, alpha, c):
     rows = Y.shape[0]
     
+    d_ij[d_ij == 0] = 1
+    
+    print(d_ij)
+    
+    first = np.sum(delta_ij - d_ij / d_ij * delta_ij)
+    print(first)
+
+    
     for i in range(rows):
+        yi = Y[i]
+        for j in range(rows):
+            yj = Y[j]
+            first = -2 * ((yi - yj) * first) / c
+            # print(first)
+            
         pass
+
 
 
 
@@ -68,10 +90,14 @@ for i in range(itera):
 #sammon stress
 d_ij = euclidean_distances(Y, Y) #distance input space
 delta_ij = euclidean_distances(X, X) #distance output space
-delta_ij[delta_ij < 1e-5] = 1e-5
+#delta_ij[delta_ij < 1e-5] = 1e-5
 scale = np.sum(delta_ij) / 2
 dist = np.sum(((d_ij - delta_ij) ** 2 ) / delta_ij) / 2
 dist = dist / scale
+
+
+
+gradient(Y, d_ij, delta_ij, alpha, 0)
 
 
 
