@@ -29,7 +29,7 @@ def sammon(X, itera, thresh, alpha):
         c = np.sum(delta_ij) / 2 
         Y = gradient(Y, d_ij, delta_ij, alpha, c)
         E = sammonStress(d_ij, delta_ij, c)
-        print (E)
+        # print (E)
         if E < thresh:
             break
     return Y
@@ -46,7 +46,7 @@ def sammonStress(d_ij, delta_ij, c):
     
     numerator = (d_ij - delta_ij ** 2 )
     denominator = delta_ij.copy()
-    denominator[denominator < 1e-5] = 1e-5
+    denominator[denominator < 1e-6] = 1e-6
      
     dist = np.sum(numerator / denominator) /2
     dist = dist / c
@@ -153,6 +153,8 @@ for i in range(rows):
     denominator[denominator < 1e-5] = 1e-5
     
     #TRY CHANGING C and check for results
+    
+    c = np.sum(euclidean_distances(xi, int(xj[xj.shape[0]/2])))
     
     yi_ij = yi - yj
     
