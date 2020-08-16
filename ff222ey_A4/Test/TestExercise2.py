@@ -26,9 +26,8 @@ def sammon(X, itera, thresh, alpha):
     
     for i in range(itera):
         d_ij = euclidean_distances(Y, Y) #distance output space
-        c = np.sum(delta_ij) / 2 
-        Y = gradient(Y, d_ij, delta_ij, alpha, c)
-        E = sammonStress(d_ij, delta_ij, c)
+        Y = gradient(Y, d_ij, delta_ij, alpha)
+        E = sammonStress(d_ij, delta_ij)
         # print (E)
         if E < thresh:
             break
@@ -36,13 +35,15 @@ def sammon(X, itera, thresh, alpha):
 
 
 
-def sammonStress(d_ij, delta_ij, c):
+def sammonStress(d_ij, delta_ij):
     # d_ij = euclidean_distances(dist_input, dist_input) #distance input space
     # delta_ij = euclidean_distances(dist_output, dist_output) #distance output space
     
     #delta_ij[delta_ij < 1e-5] = 1e-5 #to avoid division with 0
    # scale = np.sum(delta_ij) / 2 
     #dist = np.sum(((d_ij - delta_ij) ** 2 ) / delta_ij) / 2
+    
+    c = np.sum(delta_ij) / 2 
     
     numerator = (d_ij - delta_ij ** 2 )
     denominator = delta_ij.copy()
@@ -56,7 +57,7 @@ def sammonStress(d_ij, delta_ij, c):
     return dist
 
 
-def gradient(Y, d_ij, delta_ij, alpha, c):
+def gradient(Y, d_ij, delta_ij, alpha):
     rows = Y.shape[0]
     
     for i in range(rows):
@@ -74,6 +75,10 @@ def gradient(Y, d_ij, delta_ij, alpha, c):
         denominator[denominator < 1e-6] = 1e-6
         
         #TRY CHANGING C and check for results
+        
+        div = int(xj.shape[0]/2)
+    
+        c = np.sum(euclidean_distances(xi, xj[:div]))
         
         yi_ij = yi - yj
         
@@ -153,8 +158,9 @@ for i in range(rows):
     denominator[denominator < 1e-5] = 1e-5
     
     #TRY CHANGING C and check for results
+    div = int(xj.shape[0]/2)
     
-    c = np.sum(euclidean_distances(xi, int(xj[xj.shape[0]/2])))
+    c = np.sum(euclidean_distances(xi, xj[:div]))
     
     yi_ij = yi - yj
     
