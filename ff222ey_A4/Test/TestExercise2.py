@@ -12,6 +12,7 @@ from sklearn import datasets
 from sklearn.preprocessing import normalize
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import euclidean_distances
+import pandas as pd
 
 iris = datasets.load_iris()
 X = preprocessing.normalize(iris.data, axis = 0)
@@ -19,23 +20,27 @@ y = iris.target
 div_threshold = 1e-9
 
 # NOTE It assumess that the data (X) is already preprocessed / Normalized
-def sammon(X, itera, thresh, alpha):
+def sammon(X, itera, thresh, alpha, divZero = 1e-5):
     Y = np.random.rand(np.shape(X)[0], 2) # random output space
     
     delta_ij = euclidean_distances(X, X) #distance input space
     
+    stress = 0
+    
     for i in range(itera):
         d_ij = euclidean_distances(Y, Y) #distance output space
-        Y = gradient(Y, d_ij, delta_ij, alpha)
-        E = sammonStress(d_ij, delta_ij)
+        Y = gradient(Y, d_ij, delta_ij, alpha, divZero)
+        E = sammonStress(d_ij, delta_ij, divZero)
+        stress = E
         # print (E)
         if E < thresh:
             break
+    print(f'last stress value: {stress}')
     return Y
 
 
 
-def sammonStress(d_ij, delta_ij):
+def sammonStress(d_ij, delta_ij, divZero):
     # d_ij = euclidean_distances(dist_input, dist_input) #distance input space
     # delta_ij = euclidean_distances(dist_output, dist_output) #distance output space
     
@@ -47,7 +52,7 @@ def sammonStress(d_ij, delta_ij):
     
     numerator = (d_ij - delta_ij ** 2 )
     denominator = delta_ij.copy()
-    denominator[denominator < 1e-6] = 1e-6
+    denominator[denominator < divZero] = divZero
      
     dist = np.sum(numerator / denominator) /2
     dist = dist / c
@@ -57,7 +62,7 @@ def sammonStress(d_ij, delta_ij):
     return dist
 
 
-def gradient(Y, d_ij, delta_ij, alpha):
+def gradient(Y, d_ij, delta_ij, alpha, divZero):
     rows = Y.shape[0]
     
     for i in range(rows):
@@ -72,7 +77,7 @@ def gradient(Y, d_ij, delta_ij, alpha):
         
         numerator = inputSpace - outputSpace
         denominator = outputSpace * inputSpace
-        denominator[denominator < 1e-6] = 1e-6
+        denominator[denominator < divZero] = divZero
         
         #TRY CHANGING C and check for results
         
@@ -98,18 +103,113 @@ def gradient(Y, d_ij, delta_ij, alpha):
 
 
 
-itera = 1000
+itera = 2000
 thresh = div_threshold
-alpha = 0.01
+alpha = 0.3
 
 
-sammon(X,itera, thresh, alpha)
 
 
-Xe = sammon(X,itera, thresh, alpha)
+
+from sklearn.datasets import load_digits
+digits = load_digits()
+
+X = digits.data
+y = digits.target
+
+X = X / 255
+
+X, y = X[:200], y[:200]
+
+
+
+from sklearn.datasets import load_breast_cancer
+data = load_breast_cancer()
+X = preprocessing.normalize(data.data, axis =0)
+y = data.target
+
+
+
+from sklearn.datasets import load_wine
+wine = load_wine()
+X= preprocessing.normalize(wine.data, axis = 0)
+y = wine.target
+
+
+#PCA
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+Xe = pca.fit_transform(X)
+
+fig, ax = plt.subplots()
+ax.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=30, cmap='viridis')
+
+def urboi(Xe):
+    fig, ax = plt.subplots()
+    ax.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=30, cmap='viridis')
+    return ax
+
+ax2 = urboi(Xe)
+
+
+#TSNE
+from sklearn.manifold import TSNE
+Xe = TSNE(n_components= 2).fit_transform(X)
+
 fig, ax = plt.subplots()
 plt.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=30, cmap='viridis')
 
+
+
+datasets = [data, wine, digits]
+drs = [PCA, TSNE, sammon]
+datasets_name = ['Breast cancer', 'Wine', 'Mnist 0-9']
+drs_name = ['PCA', 'TSNE', 'Sammon']
+
+if hasattr(TSNE, 'fit_transform'):
+    print('True')
+
+fig1, ax1 = plt.subplots(nrows=3, ncols=3)
+i = 0
+for row in ax1:
+    data = datasets[i]
+    X = preprocessing.normalize(data.data, axis = 0)
+    y = data.target
+    j = 0
+    for col in row:
+        dr = drs[j]
+        if hasattr(dr, 'fit_transform'):
+            Xe = dr(n_components= 2).fit_transform(X)
+        else:
+            Xe = dr(X,itera, thresh, alpha)
+        col.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=30, cmap='viridis')
+        if j == 0:
+            col.set_ylabel(datasets_name[i])
+        if i == 0:
+            col.set_title(drs_name[j])
+        col.set_xticks([]),col.set_yticks([])
+        j +=1
+    i += 1
+plt.tight_layout()
+
+    
+
+
+
+credit = pd.read_csv('./credit.csv', delimiter=',')
+Xt = credit.iloc[:, :-1].values
+yt = credit.iloc[:, -1].values
+
+from sklearn.preprocessing import OneHotEncoder
+enc = OneHotEncoder(handle_unknown='ignore')
+
+enc.fit(Xt)
+X = enc.transform(Xt).toarray()
+
+
+Xe = sammon(X,itera, thresh, alpha, 1e-4)
+fig, ax = plt.subplots()
+plt.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=30, cmap='viridis')
 
 
 
