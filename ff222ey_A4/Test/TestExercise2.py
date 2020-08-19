@@ -166,6 +166,11 @@ drs = [PCA, TSNE, sammon]
 datasets_name = ['Breast cancer', 'Wine', 'Mnist 0-9']
 drs_name = ['PCA', 'TSNE', 'Sammon']
 
+font = {'family' : 'normal',
+        'size'   : 14}
+
+plt.rc('font', **font)
+
 if hasattr(TSNE, 'fit_transform'):
     print('True')
 
@@ -175,6 +180,7 @@ for row in ax1:
     data = datasets[i]
     X = preprocessing.normalize(data.data, axis = 0)
     y = data.target
+    X, y = X[:300], y[:300]
     j = 0
     for col in row:
         dr = drs[j]
@@ -182,15 +188,17 @@ for row in ax1:
             Xe = dr(n_components= 2).fit_transform(X)
         else:
             Xe = dr(X,itera, thresh, alpha)
-        col.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=30, cmap='viridis')
+        col.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=20, cmap='viridis')
         if j == 0:
             col.set_ylabel(datasets_name[i])
         if i == 0:
             col.set_title(drs_name[j])
         col.set_xticks([]),col.set_yticks([])
-        j +=1
+        #j +=1
     i += 1
 plt.tight_layout()
+fig1.set_size_inches(15, 9)
+fig1.savefig('./.ipynb_checkpoints/DrTechniques.png')
 
     
 
