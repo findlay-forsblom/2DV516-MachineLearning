@@ -119,7 +119,7 @@ y = digits.target
 
 X = X / 255
 
-X, y = X[:200], y[:200]
+X, y = X[:500], y[:500]
 
 
 
@@ -157,7 +157,11 @@ from sklearn.manifold import TSNE
 Xe = TSNE(n_components= 2).fit_transform(X)
 
 fig, ax = plt.subplots()
-plt.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=30, cmap='viridis')
+ax.set_xticks([]),ax.set_yticks([])
+plt.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=20, cmap='viridis')
+fig.set_size_inches(9, 5)
+fig.savefig('./.ipynb_checkpoints/TSNE.png')
+
 
 
 
