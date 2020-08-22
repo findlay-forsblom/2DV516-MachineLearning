@@ -121,6 +121,7 @@ X = X / 255
 
 X, y = X[:500], y[:500]
 
+digits.target_names
 
 
 from sklearn.datasets import load_breast_cancer
@@ -142,7 +143,10 @@ pca = PCA(n_components=2)
 Xe = pca.fit_transform(X)
 
 fig, ax = plt.subplots()
+ax.set_xticks([]),ax.set_yticks([])
 ax.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=30, cmap='viridis')
+fig.set_size_inches(9, 5)
+fig.savefig('./.ipynb_checkpoints/PCA.png')
 
 def urboi(Xe):
     fig, ax = plt.subplots()
@@ -154,7 +158,7 @@ ax2 = urboi(Xe)
 
 #TSNE
 from sklearn.manifold import TSNE
-Xe = TSNE(n_components= 2).fit_transform(X)
+Xe = TSNE(n_components= 2, lol =5).fit_transform(X)
 
 fig, ax = plt.subplots()
 ax.set_xticks([]),ax.set_yticks([])
@@ -222,6 +226,93 @@ X = enc.transform(Xt).toarray()
 Xe = sammon(X,itera, thresh, alpha, 1e-4)
 fig, ax = plt.subplots()
 plt.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=30, cmap='viridis')
+fig.set_size_inches(9, 5)
+fig.savefig('./.ipynb_checkpoints/sammon.png')
+
+
+from sklearn.cluster import KMeans
+
+
+def bkmeans (X, k, itera = 10):
+    all_labels = np.zeros(X.shape[0], dtype = 'int64')
+    largest_cluster = X
+    ind = np.where(all_labels == 0)
+    cluster_num = 0
+    
+    for clusters in range(k):
+        #Fitting the largest cluster
+        kmeans = KMeans(n_clusters=2, n_init = itera).fit(largest_cluster)
+        labels = kmeans.labels_
+        
+        #find the positive and the negative indices and assigning new values
+        pos_ind = np.where(labels == 1)
+        neg_ind = np.where(labels == 0)
+        labels[neg_ind] = cluster_num
+        labels[pos_ind] = clusters
+        all_labels[ind] = labels
+        
+        # Finds the largest cluster
+        counts = np.bincount(all_labels)
+        most_common = np.argmax(counts)
+        ind = np.where(most_common == all_labels)
+        largest_cluster = X[ind]
+        
+        #getting the number of the largest cluster
+        cluster_num = all_labels[ind][0]
+   
+    return all_labels
+
+from sklearn.cluster import KMeans
+from sklearn.cluster import AgglomerativeClustering
+
+# Exercise 3.2
+Xe = TSNE(n_components= 2).fit_transform(X)
+y = bkmeans(Xe, k=10, itera = 10)
+fig, ax = plt.subplots()
+fig.set_size_inches(9, 5)
+plt.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=20, cmap='viridis')
+
+
+y = AgglomerativeClustering(n_clusters = 10).fit_predict(Xe)
+
+y = KMeans(n_clusters = 10).fit_predict(Xe)
+
+clusterTechniques = [KMeans, bkmeans, AgglomerativeClustering]
+clusterNames = ['Kmeans', 'bkmeans', 'Agglomerative']
+
+fig1, ax1 = plt.subplots(nrows=3, ncols=3)
+i = 0
+for row in ax1:
+    data = datasets[i]
+    clusters = len(data.target_names)
+    X = preprocessing.normalize(data.data, axis = 0)
+    y = data.target
+    Xe = TSNE(n_components= 2).fit_transform(X)
+    j = 0
+    for col in row:
+       cluster = clusterTechniques[j]
+       if hasattr(cluster, 'fit_predict'):
+           y = cluster(n_clusters = clusters).fit_predict(Xe)
+       else:
+           cluster(Xe, k=clusters, itera = 10)
+       col.scatter(Xe[:,0], Xe[:,1], alpha=0.8, c=y, s=20, cmap='viridis')
+       if j == 0:
+           col.set_ylabel(datasets_name[i])
+       if i == 0:
+           col.set_title(clusterNames[j])
+       col.set_xticks([]),col.set_yticks([])
+        #j +=1
+    i += 1
+              
+plt.tight_layout()
+fig1.set_size_inches(15, 9)
+fig1.savefig('./.ipynb_checkpoints/DrTechniques.png')
+
+
+
+
+
+
 
 
 
